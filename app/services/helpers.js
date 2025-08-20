@@ -31,3 +31,14 @@ export function createMetadata(fileName, fileType, additionalMeta = {}) {
     ...additionalMeta,
   };
 }
+
+export function normalizeDoc(doc, source, idx, userID) {
+  return {
+    pageContent: doc.pageContent || doc.text || "",
+    metadata: {
+      ...doc.metadata,
+      ...createMetadata(source, doc.type || "text", { chunkIndex: idx }),
+      userID: String(userID), // force save
+    },
+  };
+}

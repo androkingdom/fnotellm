@@ -1,5 +1,6 @@
 import { getVectorStore } from "@/app/services/getVectorStore";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { JsonOutputFunctionsParser } from "langchain/output_parsers";
 import {
   HumanMessage,
   SystemMessage,
@@ -8,21 +9,32 @@ import {
 
 export async function generateChatResponse(
   userQuery,
-  conversationHistory = []
+  conversationHistory = [],
+  userID
 ) {
   try {
+    console.log("Retrivaler ID: ", userID);
     // 1. Get vector store and search for similar documents
     const vectorStore = await getVectorStore("user-uploads");
-    const relevantDocs = await vectorStore.similaritySearch(userQuery, 4);
+    const retriever = vectorStore.asRetriever({
+      filter: { userID: userID },
+      k: 4, // number of chunks to retrieve
+    });
 
+    // 3. Fetch relevant docs
+    const relevantDocs = await retriever.invoke(userQuery);
+    console.log("Relevant docs:", relevantDocs, "end");
     // 2. Format retrieved context
     const context = relevantDocs
       .map((doc, index) => {
         const source =
-          doc.metadata.fileName || doc.metadata.sourceUrl || "Unknown";
-        return `[Document ${index + 1} - ${source}]:\n${doc.pageContent}`;
+          doc.metadata?.fileName || doc.metadata?.sourceUrl || "Unknown";
+        const content = doc.pageContent || "[No content found]";
+        return `[Document ${index + 1} - ${source}]:\n${content}`;
       })
       .join("\n\n");
+
+    console.log("Context:", context, "end");
 
     // 3. Create system message
     const systemMessage = `You are a helpful AI assistant. Use the following context from the user's uploaded documents to answer their questions accurately.
@@ -38,7 +50,7 @@ Instructions:
 
     // 4. Initialize Google Gemini LLM
     const llm = new ChatGoogleGenerativeAI({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.0-flash-lite",
       temperature: 0.3,
       maxOutputTokens: 2048,
     });

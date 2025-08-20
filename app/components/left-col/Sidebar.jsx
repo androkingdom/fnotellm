@@ -179,11 +179,12 @@ export default function Sidebar() {
 
     // Create FormData
     const fd = new FormData();
+    console.log("all chips", chips);
     chips.forEach((c) => {
       if (c.kind === "pdf") fd.append("pdfFiles", c.file, c.file.name);
       if (c.kind === "csv") fd.append("csvFiles", c.file, c.file.name);
-      if (c.kind === "text") fd.append("texts", c.content);
-      if (c.kind === "link") fd.append("links", c.url);
+      if (c.kind === "text") fd.append("texts", c.text);
+      if (c.kind === "link") fd.append("links", c.meta);
     });
 
     setIsLoadingButton(true);

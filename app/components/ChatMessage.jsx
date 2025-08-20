@@ -35,29 +35,47 @@ export default function ChatMessage({ message }) {
         </div>
 
         {/* Sources section */}
-        {!isUser &&
-          !isLoading &&
-          message.sources &&
-          message.sources.length > 0 && (
-            <div className="ml-4 space-y-1">
-              <div className="text-xs font-medium text-muted-foreground/80">
-                📚 Sources:
-              </div>
-              <div className="space-y-1">
-                {message.sources.map((source, i) => (
+        {message.sources?.length > 0 && (
+          <div className="ml-4 space-y-1">
+            <div className="text-xs font-medium text-muted-foreground/80">
+              📚 Sources:
+            </div>
+            <div className="space-y-1">
+              {message.sources.map((source, i) => {
+                const type = source.fileType || "unknown"; // from normalizeDoc
+                let label;
+
+                switch (type) {
+                  case "pdf":
+                    label = `📄 PDF: ${source.fileName || "Untitled"}`;
+                    break;
+                  case "csv":
+                    label = `📊 CSV: ${source.fileName || "Untitled"}`;
+                    break;
+                  case "link":
+                    label = `🔗 Link: ${source.sourceUrl || "Unknown link"}`;
+                    break;
+                  case "text":
+                    label = "📝 Text Snippet";
+                    break;
+                  default:
+                    label =
+                      source.fileName || source.sourceUrl || "Unknown source";
+                }
+
+                return (
                   <div
                     key={i}
                     className="text-xs text-muted-foreground/70 flex items-center bg-muted/30 px-2 py-1 rounded-lg"
                   >
                     <div className="w-1.5 h-1.5 bg-primary/60 rounded-full mr-2 flex-shrink-0"></div>
-                    <span className="truncate">
-                      {source.fileName || source.sourceUrl || "Unknown source"}
-                    </span>
+                    <span className="truncate">{label}</span>
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
-          )}
+          </div>
+        )}
 
         {/* Timestamp */}
         {message.timestamp && !isLoading && (

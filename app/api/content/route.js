@@ -1,9 +1,12 @@
 import { ingestAction } from "@/app/services/ingesion";
+import { getOrCreateUserID } from "@/lib/getUserId";
 
 export async function POST(req, res) {
   try {
     const data = await req.formData();
-    const result = await ingestAction(data);
+    const userID = await getOrCreateUserID();
+    console.log("Data and userID: ", data, userID);
+    const result = await ingestAction(data, userID);
     return Response.json({
       status: 200,
       message: "Success",

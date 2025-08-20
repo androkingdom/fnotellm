@@ -1,9 +1,11 @@
 "use server";
 import { generateChatResponse } from "@/app/services/chatService";
+import { getOrCreateUserID } from "@/lib/getUserId";
 
 export async function POST(req) {
   try {
     const { question, history = [] } = await req.json();
+    const userID = await getOrCreateUserID();
 
     if (!question?.trim()) {
       return Response.json(
@@ -15,7 +17,7 @@ export async function POST(req) {
       );
     }
 
-    const result = await generateChatResponse(question, history);
+    const result = await generateChatResponse(question, history, userID);
 
     if (result.success) {
       return Response.json({

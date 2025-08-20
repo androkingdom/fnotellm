@@ -9,11 +9,13 @@ import {
   setMessageError,
   clearError,
 } from "@/lib/features/chat/chatSlice";
+// import { getOrCreateUserID } from "@/lib/getUserId";
 
 export default function ChatInput() {
   const [value, setValue] = useState("");
   const dispatch = useAppDispatch();
   const { messages, error } = useAppSelector((state) => state.chat);
+  // const userID = getOrCreateUserID().then((id) => id); // cookie ensured
 
   // Check if assistant is currently thinking
   const isLoading = messages.some((m) => m.status === "loading");
@@ -58,6 +60,7 @@ export default function ChatInput() {
         body: JSON.stringify({
           question: value.trim(),
           history,
+          // userID,
         }),
       });
 

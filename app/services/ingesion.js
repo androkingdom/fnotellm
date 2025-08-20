@@ -4,7 +4,7 @@ import { ingestFiles } from "./ingestFileContent.js";
 import { ingestTexts } from "./ingestTextContent.js";
 import { ingestLinks } from "./ingestLinkContent.js";
 
-export async function ingestAction(formData) {
+export async function ingestAction(formData, userID) {
   try {
     const vectorStore = await getVectorStore("user-uploads");
 
@@ -13,6 +13,8 @@ export async function ingestAction(formData) {
     const csvFiles = formData.getAll("csvFiles");
     const texts = formData.getAll("texts");
     const links = formData.getAll("links");
+    console.log("Texts: frm ingestion", texts);
+    console.log("Links: frm ingestion", links);
 
     console.log(
       `Processing: ${pdfFiles.length} PDFs, ${csvFiles.length} CSVs, ${texts.length} texts, ${links.length} links`
@@ -20,9 +22,9 @@ export async function ingestAction(formData) {
 
     // Process all content types
     const [fileResults, textResults, linkResults] = await Promise.all([
-      ingestFiles(pdfFiles, csvFiles, vectorStore),
-      ingestTexts(texts, vectorStore),
-      ingestLinks(links, vectorStore),
+      ingestFiles(pdfFiles, csvFiles, vectorStore, userID),
+      ingestTexts(texts, vectorStore, userID),
+      ingestLinks(links, vectorStore, userID),
     ]);
 
     // Calculate totals

@@ -1,8 +1,8 @@
 import { CheerioWebBaseLoader } from "@langchain/community/document_loaders/web/cheerio";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { createMetadata } from "./helpers.js";
+import { normalizeDoc } from "./helpers.js";
 
-export async function ingestLinks(links, vectorStore) {
+export async function ingestLinks(links, vectorStore, userID) {
   const results = {
     processed: 0,
     failed: 0,
@@ -11,6 +11,7 @@ export async function ingestLinks(links, vectorStore) {
 
   // Process each URL (works for 1 URL or 100 URLs)
   for (const url of links) {
+    console.log("URL: ", url);
     if (!url.trim()) continue;
 
     try {
@@ -29,18 +30,12 @@ export async function ingestLinks(links, vectorStore) {
         chunkOverlap: 200,
       });
       const splitDocs = await textSplitter.splitDocuments(docs);
+      console.log("Docs LINK: ", splitDocs);
 
       // Add metadata
-      const enrichedDocs = splitDocs.map((doc, idx) => ({
-        ...doc,
-        metadata: {
-          ...doc.metadata,
-          ...createMetadata(url, "url", {
-            sourceUrl: url,
-            chunkIndex: idx,
-          }),
-        },
-      }));
+      const enrichedDocs = splitDocs.map((doc, idx) =>
+        normalizeDoc(doc, url, idx, userID)
+      );
 
       // Add to vector store
       await vectorStore.addDocuments(enrichedDocs);

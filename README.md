@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FNoteLLM
 
-## Getting Started
+[![FNoteLLM Banner](image.png)](https://fnotellm-5o12xiijt-androkingdoms-projects.vercel.app/)
 
-First, run the development server:
+**A personal Notebook AI — chat with your PDFs, CSVs, text, and links in a single session.**
+
+---
+
+## 🚀 Live Demo
+
+[🌐 Try it Live](https://fnotellm-5o12xiijt-androkingdoms-projects.vercel.app/)
+
+---
+
+## 📝 Description
+
+FNoteLLM is a **Next.js + LangChain-powered AI notebook** that allows you to:
+
+- Upload **PDFs, CSVs, or paste text**
+- Share **links to web content**
+- Ask questions about your documents
+- Get **source-aware responses**
+
+Currently, the app supports **one active chat session per user**, so all conversation context and sources are kept in a single session.
+
+---
+
+## ⚡ Features
+
+- ✅ Upload and ingest PDFs, CSVs, text, and links
+- ✅ User-specific document embeddings (via cookies)
+- ✅ Chat with documents in a notebook-style interface
+- ✅ Source references included in responses
+- ✅ Fixed chat input with scrollable window
+- ✅ Light/Dark mode toggle
+
+---
+
+## 🛠️ Tech Stack
+
+- **Next.js 15 (SSR)** — full server-side rendering
+- **Tailwind CSS + ShadCN** — clean, responsive UI
+- **Redux Toolkit** — chat state management
+- **LangChain + Google Gemini** — AI responses
+- **Pinecone** — vector database for embeddings
+- **Sonner** — toast notifications
+
+---
+
+## 📦 Installation
 
 ```bash
+# Clone repo
+git clone https://github.com/yourusername/fnotellm.git
+cd fnotellm
+
+# Install dependencies
+npm install
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## ⚙️ Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Open the app in your browser.
+2. Upload a PDF, CSV, paste text, or provide a link.
+3. Ask questions in the chat input.
+4. View answers with **source references**.
+5. All conversation context is stored in **one session per user**.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🗂️ Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+/app
+ ├─ page.jsx          # Main page layout
+ ├─ components
+ │   ├─ ChatWindow.jsx
+ │   ├─ ChatInput.jsx
+ │   ├─ left-col       # Sidebar + upload components
+ │   └─ shared         # theme toggle & provider
+ ├─ services           # ingestion & chat services
+ └─ api                # server routes
+/lib
+ ├─ features/chat      # redux slice
+ └─ utils/hooks.js, store.js, getUserId.js
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 💡 Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Make sure to add your **Google Gemini API key** in `.env.local`.
+- Only **one active chat session per user** is supported.
+- User IDs are handled via **cookies** for per-user embeddings.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🤝 Contributing
+
+Feel free to open issues or submit pull requests.
+
+---
+
+## 📜 License
+
+MIT License — see `LICENSE` file.
+
+---
+
+### 👀 Fun Fact
+
+Yes… I **myself didn’t add a README** when I started 😂.
+Polished it now, thanks to GPT Sensei’s secret polishing skills.
