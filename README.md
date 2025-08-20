@@ -8,7 +8,7 @@
 
 ## 🚀 Live Demo
 
-[🌐 Try it Live](hthttps://fnotellm.vercel.app/)
+[🌐 Try it Live](https://fnotellm.vercel.app/)
 
 ---
 
