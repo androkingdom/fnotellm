@@ -8,7 +8,7 @@
 
 ## 🚀 Live Demo
 
-[🌐 Try it Live](https://fnotellm-5o12xiijt-androkingdoms-projects.vercel.app/)
+[🌐 Try it Live](hthttps://fnotellm.vercel.app/)
 
 ---
 
@@ -51,7 +51,7 @@ Currently, the app supports **one active chat session per user**, so all convers
 
 ```bash
 # Clone repo
-git clone https://github.com/yourusername/fnotellm.git
+git clone https://github.com/androkingdom/fnotellm.git
 cd fnotellm
 
 # Install dependencies
