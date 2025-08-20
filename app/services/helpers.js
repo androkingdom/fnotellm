@@ -6,15 +6,15 @@ import os from "os";
 export async function createTempFile(file) {
   // Use Node.js temp directory - works in both local dev and serverless
   const tempDir = os.tmpdir();
-  
+
   const buffer = Buffer.from(await file.arrayBuffer());
   const uniqueFileName = `${Date.now()}-${Math.random()
     .toString(36)
     .substring(7)}-${file.name}`;
-  
+
   const filePath = path.join(tempDir, uniqueFileName);
   await fs.writeFile(filePath, buffer);
-  
+
   return filePath;
 }
 
@@ -25,7 +25,6 @@ export async function cleanupTempFile(filePath) {
     console.warn(`Failed to cleanup temp file: ${filePath}`, error);
   }
 }
-
 
 export function createMetadata(fileName, fileType, additionalMeta = {}) {
   return {
